@@ -35,6 +35,15 @@ export interface PropertyOwnership {
   [tileId: string]: string;
 }
 
+export interface AnimationState {
+  isAnimating: boolean;
+  type: 'dice' | 'movement' | null;
+  fromPosition?: number;
+  toPosition?: number;
+  currentStep?: number;
+  totalSteps?: number;
+}
+
 export interface GameState {
   config: GameModeConfig;
   players: Player[];
@@ -50,6 +59,7 @@ export interface GameState {
   winner: string | null;
   turnNumber: number;
   pendingDecision: PendingDecision | null;
+  animation: AnimationState;
 }
 
 export type DecisionType =
