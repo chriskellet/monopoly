@@ -210,8 +210,8 @@ function Board3D({ gameState }: Board3DProps) {
     }
 
     // Calculate the position of the tile to center it in viewport
-    // Board is a square, tiles are on the edges
-    // We need to calculate X and Y offset to center the focused tile
+    // We translate the board OPPOSITE to the tile position to center it
+    // E.g., if tile is at bottom right, we move board to top left
 
     let translateX = 0;
     let translateY = 0;
@@ -219,35 +219,35 @@ function Board3D({ gameState }: Board3DProps) {
 
     // Bottom row (0-10): positions along bottom
     if (cameraFocus === 0) {
-      translateX = 40; translateY = 40; // Bottom right corner
+      translateX = -40; translateY = -40; // Bottom right corner - move board up-left
     } else if (cameraFocus >= 1 && cameraFocus <= 9) {
-      translateX = 40 - (cameraFocus * 8.8); // Move left along bottom
-      translateY = 40;
+      translateX = -40 + (cameraFocus * 8.8); // Move right as we go left along bottom
+      translateY = -40;
     } else if (cameraFocus === 10) {
-      translateX = -40; translateY = 40; // Bottom left corner
+      translateX = 40; translateY = -40; // Bottom left corner - move board up-right
     }
     // Left column (11-19): positions along left
     else if (cameraFocus >= 11 && cameraFocus <= 19) {
-      translateX = -40;
-      translateY = 40 - ((cameraFocus - 10) * 8.8); // Move up along left
+      translateX = 40;
+      translateY = -40 + ((cameraFocus - 10) * 8.8); // Move down as we go up along left
       rotation = -90;
     }
     // Top row (20-30): positions along top
     else if (cameraFocus === 20) {
-      translateX = -40; translateY = -40; // Top left corner
+      translateX = 40; translateY = 40; // Top left corner - move board down-right
       rotation = -180;
     } else if (cameraFocus >= 21 && cameraFocus <= 29) {
-      translateX = -40 + ((cameraFocus - 20) * 8.8); // Move right along top
-      translateY = -40;
+      translateX = 40 - ((cameraFocus - 20) * 8.8); // Move left as we go right along top
+      translateY = 40;
       rotation = -180;
     } else if (cameraFocus === 30) {
-      translateX = 40; translateY = -40; // Top right corner
+      translateX = -40; translateY = 40; // Top right corner - move board down-left
       rotation = -90;
     }
     // Right column (31-39): positions along right
     else if (cameraFocus >= 31 && cameraFocus <= 39) {
-      translateX = 40;
-      translateY = -40 + ((cameraFocus - 30) * 8.8); // Move down along right
+      translateX = -40;
+      translateY = 40 - ((cameraFocus - 30) * 8.8); // Move up as we go down along right
       rotation = -90;
     }
 
