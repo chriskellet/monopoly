@@ -17,6 +17,8 @@
 
 .board-3d.camera-focused {
   animation: none;
+  /* Ensure transform origin is center for smooth panning */
+  transform-origin: center center;
 }
 
 @keyframes boardFloat {
