@@ -84,29 +84,24 @@ function Dice({ die1, die2, rolling }: DiceProps) {
           transition: rolling ? 'transform 0.1s linear' : 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         }}
       >
-        {/* Face 1 - Front */}
+        {/* All faces show the same value so dots are visible during rolling */}
         <div className="die-face die-face-front">
-          {renderDots(1)}
+          {renderDots(value)}
         </div>
-        {/* Face 2 - Right */}
         <div className="die-face die-face-right">
-          {renderDots(2)}
+          {renderDots(value)}
         </div>
-        {/* Face 3 - Top */}
         <div className="die-face die-face-top">
-          {renderDots(3)}
+          {renderDots(value)}
         </div>
-        {/* Face 4 - Bottom */}
         <div className="die-face die-face-bottom">
-          {renderDots(4)}
+          {renderDots(value)}
         </div>
-        {/* Face 5 - Left */}
         <div className="die-face die-face-left">
-          {renderDots(5)}
+          {renderDots(value)}
         </div>
-        {/* Face 6 - Back */}
         <div className="die-face die-face-back">
-          {renderDots(6)}
+          {renderDots(value)}
         </div>
       </div>
     </div>
