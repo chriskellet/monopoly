@@ -183,10 +183,19 @@ function Board3D({ gameState }: Board3DProps) {
             {players.map((player) => (
               <div
                 key={player.id}
-                className="player-token"
-                style={{ backgroundColor: player.color }}
+                className="player-token-3d"
                 title={player.name}
-              />
+              >
+                <div
+                  className="token-piece"
+                  style={{
+                    backgroundColor: player.color,
+                    borderColor: player.color,
+                  }}
+                >
+                  <div className="token-icon">{player.token}</div>
+                </div>
+              </div>
             ))}
           </div>
         )}

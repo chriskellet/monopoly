@@ -17,6 +17,15 @@ const PLAYER_COLORS = [
   '#1abc9c',
 ];
 
+const PLAYER_TOKENS = [
+  '🚗', // Car
+  '🎩', // Top Hat
+  '🐕', // Dog
+  '⛵', // Ship
+  '🎸', // Guitar
+  '⭐', // Star
+];
+
 export function createInitialGameState(
   config: GameModeConfig,
   playerNames: string[]
@@ -25,6 +34,7 @@ export function createInitialGameState(
     id: `player-${index}`,
     name,
     color: PLAYER_COLORS[index % PLAYER_COLORS.length],
+    token: PLAYER_TOKENS[index % PLAYER_TOKENS.length],
     balance: config.currency.startingBalance,
     position: 0,
     properties: [],

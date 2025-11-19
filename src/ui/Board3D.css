@@ -191,47 +191,96 @@
   left: 4px;
   right: 4px;
   display: flex;
-  gap: 3px;
+  gap: 4px;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   z-index: 10;
+  perspective: 500px;
 }
 
-.player-token {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 3px solid white;
-  box-shadow:
-    0 3px 6px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(0, 0, 0, 0.2);
+.player-token-3d {
+  transform-style: preserve-3d;
   animation: tokenBounce 0.5s ease;
   transition: all 0.3s ease;
 }
 
-.camera-focused .player-token {
-  width: 20px;
-  height: 20px;
-  border-width: 4px;
+.token-piece {
+  width: 24px;
+  height: 28px;
+  position: relative;
+  transform-style: preserve-3d;
+  background: linear-gradient(135deg, currentColor 0%, rgba(0,0,0,0.2) 100%);
+  border: 2px solid;
+  border-radius: 8px 8px 4px 4px;
   box-shadow:
-    0 5px 15px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(255, 255, 255, 0.5);
+    0 4px 8px rgba(0, 0, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(5px) rotateX(-10deg);
+  transition: all 0.3s ease;
+}
+
+.token-piece::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.token-icon {
+  font-size: 16px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  transform: translateZ(2px);
+  line-height: 1;
+}
+
+.camera-focused .token-piece {
+  width: 32px;
+  height: 38px;
+  border-width: 3px;
+  transform: translateZ(10px) rotateX(-15deg);
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.6),
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(255, 255, 255, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.camera-focused .token-icon {
+  font-size: 20px;
+}
+
+.camera-focused .token-piece::before {
+  width: 100%;
+  height: 5px;
+  filter: blur(3px);
 }
 
 @keyframes tokenBounce {
   0% {
-    transform: translateY(-30px) scale(0);
+    transform: translateY(-40px) translateZ(30px) scale(0) rotateY(180deg);
     opacity: 0;
   }
   60% {
-    transform: translateY(-5px) scale(1.2);
+    transform: translateY(-8px) translateZ(10px) scale(1.2) rotateY(20deg);
   }
   80% {
-    transform: translateY(2px) scale(0.95);
+    transform: translateY(2px) translateZ(2px) scale(0.95) rotateY(-5deg);
   }
   100% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0) translateZ(0) scale(1) rotateY(0deg);
     opacity: 1;
   }
 }

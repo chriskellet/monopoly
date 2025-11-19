@@ -25,7 +25,9 @@ function PlayerPanel({ gameState }: PlayerPanelProps) {
                 <div
                   className="player-color"
                   style={{ backgroundColor: player.color }}
-                />
+                >
+                  <span className="player-token-icon">{player.token}</span>
+                </div>
                 <div className="player-details">
                   <div className="player-name">
                     {player.name}
