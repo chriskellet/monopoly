@@ -48,6 +48,9 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setIsRolling(false);
 
+    // IMPORTANT: Show the dice result for 1.5 seconds before moving
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
     // Auto-advance if not in jail or rolled to get out
     if (newState.turnPhase === 'MOVING') {
       const oldPosition = newState.players[newState.currentPlayerIndex].position;
