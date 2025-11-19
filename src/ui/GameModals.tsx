@@ -179,8 +179,8 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
     return null;
   }
 
-  // Roll dice modal
-  if (gameState.turnPhase === 'ROLL' && !gameState.gameOver) {
+  // Roll dice modal - show during ROLL phase OR during dice animation
+  if ((gameState.turnPhase === 'ROLL' || gameState.animation.type === 'dice') && !gameState.gameOver) {
     // Always show dice (use previous roll or default values)
     const die1 = gameState.dice?.die1 || 1;
     const die2 = gameState.dice?.die2 || 1;
@@ -195,7 +195,7 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
           )}
           <Dice die1={die1} die2={die2} rolling={isRolling} />
 
-          {currentPlayer.inJail && (
+          {currentPlayer.inJail && gameState.turnPhase === 'ROLL' && (
             <div className="jail-options">
               <p>You are in jail!</p>
               {currentPlayer.getOutOfJailCards > 0 && (
@@ -214,7 +214,7 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
             </div>
           )}
 
-          {!currentPlayer.inJail && (
+          {!currentPlayer.inJail && gameState.turnPhase === 'ROLL' && (
             <button className="btn-primary btn-large" onClick={handleRollDice} disabled={isRolling}>
               {isRolling ? 'Rolling...' : '🎲 Roll Dice'}
             </button>
