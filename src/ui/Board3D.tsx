@@ -209,21 +209,22 @@ function Board3D({ gameState }: Board3DProps) {
       return 'rotateX(25deg) rotateZ(0deg) scale(1)';
     }
 
-    // Calculate rotation based on position
+    // Calculate rotation based on position - reduced rotation for less dizziness
     // Positions 0-10: bottom (no rotation)
-    // Positions 11-19: left (rotate 90deg)
-    // Positions 20-30: top (rotate 180deg)
-    // Positions 31-39: right (rotate 270deg)
+    // Positions 11-19: left (rotate 45deg instead of 90deg)
+    // Positions 20-30: top (rotate 90deg instead of 180deg)
+    // Positions 31-39: right (rotate 135deg instead of 270deg)
     let rotation = 0;
     if (cameraFocus >= 11 && cameraFocus <= 19) {
-      rotation = -90;
+      rotation = -45;
     } else if (cameraFocus >= 20 && cameraFocus <= 30) {
-      rotation = -180;
+      rotation = -90;
     } else if (cameraFocus >= 31 && cameraFocus <= 39) {
-      rotation = -270;
+      rotation = -135;
     }
 
-    return `rotateX(45deg) rotateZ(${rotation}deg) scale(1.3)`;
+    // Increased zoom and tilt for better view
+    return `rotateX(35deg) rotateZ(${rotation}deg) scale(1.5)`;
   };
 
   return (

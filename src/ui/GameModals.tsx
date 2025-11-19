@@ -166,14 +166,16 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
 
   // Roll dice modal
   if (gameState.turnPhase === 'ROLL' && !gameState.gameOver) {
+    // Always show dice (use previous roll or default values)
+    const die1 = gameState.dice?.die1 || 1;
+    const die2 = gameState.dice?.die2 || 1;
+
     return (
       <div className="modal-overlay">
         <div className="modal">
           <h2>Your Turn, {currentPlayer.name}!</h2>
 
-          {gameState.dice && (
-            <Dice die1={gameState.dice.die1} die2={gameState.dice.die2} rolling={isRolling} />
-          )}
+          <Dice die1={die1} die2={die2} rolling={isRolling} />
 
           {currentPlayer.inJail && (
             <div className="jail-options">
