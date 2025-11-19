@@ -6,6 +6,7 @@ export interface Player {
   id: string;
   name: string;
   color: string;
+  token: string; // Token icon/shape identifier
   balance: number;
   position: number;
   properties: string[];
