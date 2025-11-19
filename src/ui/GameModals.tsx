@@ -17,6 +17,7 @@ import {
 } from '../game/GameEngine';
 import { canBuildHouse, canBuildHotel } from '../game/Rules';
 import Dice from './Dice';
+import PropertyCard from './PropertyCard';
 import './GameModals.css';
 
 interface GameModalsProps {
@@ -234,10 +235,15 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
     return (
       <div className="modal-overlay">
         <div className="modal">
-          <h2>{tile?.name}</h2>
-          <p className="modal-price">
-            Price: {gameState.config.currency.symbol}{gameState.pendingDecision.data.price}
-          </p>
+          <h2>Property Available</h2>
+
+          {tile && (
+            <PropertyCard
+              tile={tile}
+              currencySymbol={gameState.config.currency.symbol}
+            />
+          )}
+
           <p>Your balance: {gameState.config.currency.symbol}{currentPlayer.balance}</p>
 
           <div className="modal-buttons">
@@ -266,13 +272,18 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
       <div className="modal-overlay">
         <div className="modal">
           <h2>Pay Rent</h2>
-          <p>You landed on {tile.name}</p>
+
+          <PropertyCard
+            tile={tile}
+            currencySymbol={gameState.config.currency.symbol}
+          />
+
           <p className="modal-rent">
             Rent: {gameState.config.currency.symbol}{amount}
           </p>
-          <p>Pay to: {ownerName}</p>
+          <p>Pay to: <strong>{ownerName}</strong></p>
 
-          <button className="btn-primary" onClick={handlePayRent}>
+          <button className="btn-primary btn-large" onClick={handlePayRent}>
             Pay Rent
           </button>
         </div>
