@@ -38,14 +38,14 @@ function Dice({ die1, die2, rolling }: DiceProps) {
   }, [rolling, die1, die2]);
 
   const getFinalRotation = (value: number) => {
-    // Rotations to show each face
+    // Rotations to show each face - rotate the cube to bring that face forward
     const rotations: Record<number, { x: number; y: number; z: number }> = {
-      1: { x: 0, y: 0, z: 0 },      // front
-      2: { x: 0, y: -90, z: 0 },    // right
-      3: { x: 0, y: 0, z: -90 },    // top
-      4: { x: 0, y: 0, z: 90 },     // bottom
-      5: { x: 0, y: 90, z: 0 },     // left
-      6: { x: 0, y: 180, z: 0 },    // back
+      1: { x: 0, y: 0, z: 0 },        // front face (1)
+      2: { x: 0, y: -90, z: 0 },      // right face (2)
+      3: { x: -90, y: 0, z: 0 },      // top face (3)
+      4: { x: 90, y: 0, z: 0 },       // bottom face (4)
+      5: { x: 0, y: 90, z: 0 },       // left face (5)
+      6: { x: 0, y: 180, z: 0 },      // back face (6)
     };
     return rotations[value] || { x: 0, y: 0, z: 0 };
   };
