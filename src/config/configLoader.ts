@@ -2,11 +2,21 @@ import { GameModeConfig } from './configSchema';
 import classicConfig from './modes/classic.json';
 import fantasyConfig from './modes/fantasy.json';
 import cityConfig from './modes/city.json';
+import ukConfig from './modes/uk.json';
+import starwarsConfig from './modes/starwars.json';
+import marioConfig from './modes/mario.json';
+import minecraftConfig from './modes/minecraft.json';
+import waltonConfig from './modes/walton.json';
 
 const configs: Record<string, GameModeConfig> = {
   classic: classicConfig as GameModeConfig,
   fantasy: fantasyConfig as GameModeConfig,
   city: cityConfig as GameModeConfig,
+  uk: ukConfig as GameModeConfig,
+  starwars: starwarsConfig as GameModeConfig,
+  mario: marioConfig as GameModeConfig,
+  minecraft: minecraftConfig as GameModeConfig,
+  walton: waltonConfig as GameModeConfig,
 };
 
 export function getAvailableModes(): { id: string; displayName: string }[] {
