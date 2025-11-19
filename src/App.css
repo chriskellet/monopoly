@@ -11,11 +11,20 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
+  /* Support for iPhone notch and safe areas */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  /* Prevent text selection on touch */
+  -webkit-user-select: none;
+  user-select: none;
+  /* Prevent tap highlight on iOS */
+  -webkit-tap-highlight-color: transparent;
 }
 
 #root {
   width: 100vw;
   height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile browsers */
 }
 
 /* Menu Screen */
@@ -77,9 +86,18 @@ body {
   color: white;
 }
 
-.menu-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .menu-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Touch feedback for mobile */
+.menu-button:active {
+  transform: scale(0.98);
+  opacity: 0.9;
 }
 
 /* Setup Screen */
@@ -213,10 +231,20 @@ body {
   color: #333;
 }
 
-.btn-primary:hover,
-.btn-secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Touch feedback for mobile */
+.btn-primary:active,
+.btn-secondary:active {
+  transform: scale(0.98);
+  opacity: 0.9;
 }
 
 /* Game Screen */
@@ -234,7 +262,7 @@ body {
   overflow: hidden;
 }
 
-/* Responsive */
+/* Responsive - Tablet and below */
 @media (max-width: 768px) {
   .game-title {
     font-size: 2.5rem;
@@ -242,9 +270,99 @@ body {
 
   .menu-container {
     padding: 2rem;
+    margin: 1rem;
   }
 
   .game-layout {
     flex-direction: column;
+  }
+
+  .setup-container {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  /* Larger touch targets on mobile */
+  .btn-primary,
+  .btn-secondary {
+    min-height: 44px; /* iOS recommended touch target */
+    padding: 1.2rem;
+  }
+
+  .mode-button {
+    min-height: 44px;
+    padding: 1.2rem;
+  }
+
+  .count-button {
+    min-height: 44px;
+    padding: 1rem;
+  }
+}
+
+/* Responsive - Small phones (iPhone SE, etc.) */
+@media (max-width: 480px) {
+  .game-title {
+    font-size: 2rem;
+  }
+
+  .game-subtitle {
+    font-size: 1rem;
+  }
+
+  .menu-container {
+    padding: 1.5rem;
+    margin: 0.5rem;
+  }
+
+  .menu-button {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+  }
+
+  .setup-container {
+    padding: 1.5rem;
+    margin: 0.5rem;
+  }
+
+  .setup-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .mode-selector {
+    gap: 0.5rem;
+  }
+
+  .mode-button {
+    min-width: 120px;
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .player-name-input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+}
+
+/* Landscape mode on phones */
+@media (max-height: 500px) and (orientation: landscape) {
+  .menu-container {
+    padding: 1rem;
+    max-width: 90vw;
+  }
+
+  .game-title {
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .game-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .setup-container {
+    padding: 1rem;
+    max-height: 85vh;
   }
 }
