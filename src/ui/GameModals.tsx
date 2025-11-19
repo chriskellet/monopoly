@@ -135,7 +135,15 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
   };
 
   const handleEndTurn = () => {
-    const newState = endTurn(gameState);
+    let newState = endTurn(gameState);
+    // Always reset animation when ending turn
+    newState = {
+      ...newState,
+      animation: {
+        isAnimating: false,
+        type: null,
+      },
+    };
     setGameState(newState);
   };
 
@@ -159,8 +167,12 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
     setGameState(newState);
   };
 
-  // Hide modals during movement animation
-  if (gameState.animation.isAnimating && gameState.animation.type === 'movement') {
+  // Hide modals during movement animation EXCEPT for the roll modal
+  if (
+    gameState.animation.isAnimating &&
+    gameState.animation.type === 'movement' &&
+    gameState.turnPhase !== 'ROLL'
+  ) {
     return null;
   }
 
@@ -175,6 +187,9 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
         <div className="modal">
           <h2>Your Turn, {currentPlayer.name}!</h2>
 
+          {gameState.dice && !isRolling && (
+            <div className="dice-result-label">Your Roll:</div>
+          )}
           <Dice die1={die1} die2={die2} rolling={isRolling} />
 
           {currentPlayer.inJail && (
@@ -301,6 +316,15 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
         </div>
       </div>
     );
+  }
+
+  // End phase - auto advance to next player
+  if (gameState.turnPhase === 'END' && !gameState.gameOver) {
+    // Automatically end turn after a brief delay
+    setTimeout(() => {
+      handleEndTurn();
+    }, 100);
+    return null; // Show nothing while transitioning
   }
 
   // Manage phase modal
