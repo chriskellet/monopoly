@@ -38,14 +38,14 @@ function Dice({ die1, die2, rolling }: DiceProps) {
   }, [rolling, die1, die2]);
 
   const getFinalRotation = (value: number) => {
-    // Rotations to show each face
+    // Rotations to show each face - rotate the cube to bring that face forward
     const rotations: Record<number, { x: number; y: number; z: number }> = {
-      1: { x: 0, y: 0, z: 0 },      // front
-      2: { x: 0, y: -90, z: 0 },    // right
-      3: { x: 0, y: 0, z: -90 },    // top
-      4: { x: 0, y: 0, z: 90 },     // bottom
-      5: { x: 0, y: 90, z: 0 },     // left
-      6: { x: 0, y: 180, z: 0 },    // back
+      1: { x: 0, y: 0, z: 0 },        // front face (1)
+      2: { x: 0, y: -90, z: 0 },      // right face (2)
+      3: { x: -90, y: 0, z: 0 },      // top face (3)
+      4: { x: 90, y: 0, z: 0 },       // bottom face (4)
+      5: { x: 0, y: 90, z: 0 },       // left face (5)
+      6: { x: 0, y: 180, z: 0 },      // back face (6)
     };
     return rotations[value] || { x: 0, y: 0, z: 0 };
   };
@@ -84,24 +84,29 @@ function Dice({ die1, die2, rolling }: DiceProps) {
           transition: rolling ? 'transform 0.1s linear' : 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         }}
       >
-        {/* All faces show the same value so dots are visible during rolling */}
+        {/* Face 1 - Front */}
         <div className="die-face die-face-front">
-          {renderDots(value)}
+          {renderDots(1)}
         </div>
+        {/* Face 2 - Right */}
         <div className="die-face die-face-right">
-          {renderDots(value)}
+          {renderDots(2)}
         </div>
+        {/* Face 3 - Top */}
         <div className="die-face die-face-top">
-          {renderDots(value)}
+          {renderDots(3)}
         </div>
+        {/* Face 4 - Bottom */}
         <div className="die-face die-face-bottom">
-          {renderDots(value)}
+          {renderDots(4)}
         </div>
+        {/* Face 5 - Left */}
         <div className="die-face die-face-left">
-          {renderDots(value)}
+          {renderDots(5)}
         </div>
+        {/* Face 6 - Back */}
         <div className="die-face die-face-back">
-          {renderDots(value)}
+          {renderDots(6)}
         </div>
       </div>
     </div>
