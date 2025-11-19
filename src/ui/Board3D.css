@@ -12,6 +12,11 @@
   height: min(90vmin, 800px);
   transform-style: preserve-3d;
   animation: boardFloat 6s ease-in-out infinite;
+  transform: rotateX(25deg) rotateZ(0deg) scale(1);
+}
+
+.board-3d.camera-focused {
+  animation: none;
 }
 
 @keyframes boardFloat {
@@ -186,24 +191,49 @@
   left: 4px;
   right: 4px;
   display: flex;
-  gap: 2px;
+  gap: 3px;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   z-index: 10;
 }
 
 .player-token {
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: 3px solid white;
+  box-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(0, 0, 0, 0.2);
   animation: tokenBounce 0.5s ease;
+  transition: all 0.3s ease;
+}
+
+.camera-focused .player-token {
+  width: 20px;
+  height: 20px;
+  border-width: 4px;
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 @keyframes tokenBounce {
-  0% { transform: translateY(-20px) scale(0); opacity: 0; }
-  50% { transform: translateY(-5px) scale(1.1); }
-  100% { transform: translateY(0) scale(1); opacity: 1; }
+  0% {
+    transform: translateY(-30px) scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-5px) scale(1.2);
+  }
+  80% {
+    transform: translateY(2px) scale(0.95);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }
 
 /* Board center */

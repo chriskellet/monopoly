@@ -57,6 +57,10 @@ export function createInitialGameState(
     winner: null,
     turnNumber: 1,
     pendingDecision: null,
+    animation: {
+      isAnimating: false,
+      type: null,
+    },
   };
 }
 

@@ -30,21 +30,70 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
   const currentPlayer = gameState.players[gameState.currentPlayerIndex];
 
   const handleRollDice = async () => {
+    // Start dice rolling animation
     setIsRolling(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsRolling(false);
 
+    // Roll dice immediately to get the values
     let newState = rollDice(gameState);
+    newState = {
+      ...newState,
+      animation: {
+        isAnimating: true,
+        type: 'dice',
+      },
+    };
     setGameState(newState);
+
+    // Wait for dice animation to complete
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsRolling(false);
 
     // Auto-advance if not in jail or rolled to get out
     if (newState.turnPhase === 'MOVING') {
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      newState = movePlayer(newState);
+      const oldPosition = newState.players[newState.currentPlayerIndex].position;
+      const steps = newState.dice!.total;
+
+      // Start movement animation
+      newState = {
+        ...newState,
+        animation: {
+          isAnimating: true,
+          type: 'movement',
+          fromPosition: oldPosition,
+          toPosition: (oldPosition + steps) % newState.config.board.tiles.length,
+          currentStep: 0,
+          totalSteps: steps,
+        },
+      };
       setGameState(newState);
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // Wait for movement animation (will be handled by Board3D)
+      await new Promise((resolve) => setTimeout(resolve, steps * 400 + 500));
+
+      // Complete the move
+      newState = movePlayer(newState);
+      newState = {
+        ...newState,
+        animation: {
+          isAnimating: false,
+          type: null,
+        },
+      };
+      setGameState(newState);
+
+      // Small delay before showing next modal
+      await new Promise((resolve) => setTimeout(resolve, 300));
       newState = resolveTileLanding(newState);
+      setGameState(newState);
+    } else {
+      // End animation if not moving
+      newState = {
+        ...newState,
+        animation: {
+          isAnimating: false,
+          type: null,
+        },
+      };
       setGameState(newState);
     }
   };
@@ -109,6 +158,11 @@ function GameModals({ gameState, setGameState }: GameModalsProps) {
     const newState = buildHotel(gameState, propertyId);
     setGameState(newState);
   };
+
+  // Hide modals during movement animation
+  if (gameState.animation.isAnimating && gameState.animation.type === 'movement') {
+    return null;
+  }
 
   // Roll dice modal
   if (gameState.turnPhase === 'ROLL' && !gameState.gameOver) {

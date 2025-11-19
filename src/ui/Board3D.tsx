@@ -1,9 +1,15 @@
+import { useEffect, useState, useRef } from 'react';
 import { GameState } from '../game/GameState';
 import { TileConfig } from '../config/configSchema';
 import './Board3D.css';
 
 interface Board3DProps {
   gameState: GameState;
+}
+
+interface AnimatedPosition {
+  position: number;
+  progress: number;
 }
 
 const COLOR_GROUPS: Record<string, string> = {
@@ -35,6 +41,44 @@ const COLOR_GROUPS: Record<string, string> = {
 
 function Board3D({ gameState }: Board3DProps) {
   const tiles = gameState.config.board.tiles;
+  const [animatedPositions, setAnimatedPositions] = useState<Record<string, AnimatedPosition>>({});
+  const [cameraFocus, setCameraFocus] = useState<number | null>(null);
+  const animationFrameRef = useRef<number>();
+
+  // Handle movement animation
+  useEffect(() => {
+    if (gameState.animation.isAnimating && gameState.animation.type === 'movement') {
+      const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+      const startPos = gameState.animation.fromPosition!;
+      const endPos = gameState.animation.toPosition!;
+      const totalSteps = gameState.animation.totalSteps!;
+
+      let currentStep = 0;
+      const stepDuration = 400; // ms per step
+
+      const animate = () => {
+        if (currentStep <= totalSteps) {
+          const targetPos = (startPos + currentStep) % tiles.length;
+          setAnimatedPositions({
+            [currentPlayer.id]: {
+              position: targetPos,
+              progress: 1,
+            },
+          });
+          setCameraFocus(targetPos);
+          currentStep++;
+          setTimeout(animate, stepDuration);
+        } else {
+          setCameraFocus(null);
+        }
+      };
+
+      animate();
+    } else {
+      setAnimatedPositions({});
+      setCameraFocus(null);
+    }
+  }, [gameState.animation, gameState.currentPlayerIndex, gameState.players, tiles.length]);
 
   const getTileColor = (tile: TileConfig): string => {
     if (tile.colorGroup) {
@@ -53,7 +97,17 @@ function Board3D({ gameState }: Board3DProps) {
   };
 
   const getPlayersAtPosition = (position: number) => {
-    return gameState.players.filter((p) => p.position === position && !p.isBankrupt);
+    return gameState.players.filter((p) => {
+      if (p.isBankrupt) return false;
+
+      // Check if player is being animated
+      const animPos = animatedPositions[p.id];
+      if (animPos) {
+        return animPos.position === position;
+      }
+
+      return p.position === position;
+    });
   };
 
   const getHouseCount = (tileId: string): number => {
@@ -140,9 +194,38 @@ function Board3D({ gameState }: Board3DProps) {
     );
   };
 
+  // Calculate transform for camera focus
+  const getBoardTransform = () => {
+    if (cameraFocus === null) {
+      return 'rotateX(25deg) rotateZ(0deg) scale(1)';
+    }
+
+    // Calculate rotation based on position
+    // Positions 0-10: bottom (no rotation)
+    // Positions 11-19: left (rotate 90deg)
+    // Positions 20-30: top (rotate 180deg)
+    // Positions 31-39: right (rotate 270deg)
+    let rotation = 0;
+    if (cameraFocus >= 11 && cameraFocus <= 19) {
+      rotation = -90;
+    } else if (cameraFocus >= 20 && cameraFocus <= 30) {
+      rotation = -180;
+    } else if (cameraFocus >= 31 && cameraFocus <= 39) {
+      rotation = -270;
+    }
+
+    return `rotateX(45deg) rotateZ(${rotation}deg) scale(1.3)`;
+  };
+
   return (
     <div className="board-container">
-      <div className="board-3d">
+      <div
+        className={`board-3d ${cameraFocus !== null ? 'camera-focused' : ''}`}
+        style={{
+          transform: getBoardTransform(),
+          transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      >
         <div className="board-surface">
           {tiles.map((tile, index) => renderTile(tile, index))}
 
