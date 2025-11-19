@@ -209,22 +209,54 @@ function Board3D({ gameState }: Board3DProps) {
       return 'rotateX(25deg) rotateZ(0deg) scale(1)';
     }
 
-    // Calculate rotation based on position - reduced rotation for less dizziness
-    // Positions 0-10: bottom (no rotation)
-    // Positions 11-19: left (rotate 45deg instead of 90deg)
-    // Positions 20-30: top (rotate 90deg instead of 180deg)
-    // Positions 31-39: right (rotate 135deg instead of 270deg)
+    // Calculate the position of the tile to center it in viewport
+    // Board is a square, tiles are on the edges
+    // We need to calculate X and Y offset to center the focused tile
+
+    let translateX = 0;
+    let translateY = 0;
     let rotation = 0;
-    if (cameraFocus >= 11 && cameraFocus <= 19) {
-      rotation = -45;
-    } else if (cameraFocus >= 20 && cameraFocus <= 30) {
+
+    // Bottom row (0-10): positions along bottom
+    if (cameraFocus === 0) {
+      translateX = 40; translateY = 40; // Bottom right corner
+    } else if (cameraFocus >= 1 && cameraFocus <= 9) {
+      translateX = 40 - (cameraFocus * 8.8); // Move left along bottom
+      translateY = 40;
+    } else if (cameraFocus === 10) {
+      translateX = -40; translateY = 40; // Bottom left corner
+    }
+    // Left column (11-19): positions along left
+    else if (cameraFocus >= 11 && cameraFocus <= 19) {
+      translateX = -40;
+      translateY = 40 - ((cameraFocus - 10) * 8.8); // Move up along left
       rotation = -90;
-    } else if (cameraFocus >= 31 && cameraFocus <= 39) {
-      rotation = -135;
+    }
+    // Top row (20-30): positions along top
+    else if (cameraFocus === 20) {
+      translateX = -40; translateY = -40; // Top left corner
+      rotation = -180;
+    } else if (cameraFocus >= 21 && cameraFocus <= 29) {
+      translateX = -40 + ((cameraFocus - 20) * 8.8); // Move right along top
+      translateY = -40;
+      rotation = -180;
+    } else if (cameraFocus === 30) {
+      translateX = 40; translateY = -40; // Top right corner
+      rotation = -90;
+    }
+    // Right column (31-39): positions along right
+    else if (cameraFocus >= 31 && cameraFocus <= 39) {
+      translateX = 40;
+      translateY = -40 + ((cameraFocus - 30) * 8.8); // Move down along right
+      rotation = -90;
     }
 
-    // Increased zoom and tilt for better view
-    return `rotateX(35deg) rotateZ(${rotation}deg) scale(1.5)`;
+    // Zoom in more on mobile for better visibility
+    const isMobile = window.innerWidth <= 768;
+    const scale = isMobile ? 2.2 : 1.8;
+    const tiltAngle = isMobile ? 25 : 30; // Less tilt on mobile for better view
+
+    return `rotateX(${tiltAngle}deg) rotateZ(${rotation}deg) scale(${scale}) translate(${translateX}%, ${translateY}%)`;
   };
 
   return (
