@@ -142,10 +142,27 @@
   color: #333;
 }
 
-.btn-primary:not(:disabled):hover,
-.btn-secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:not(:disabled):hover,
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .property-button:hover {
+    background: var(--primary-color, #1a472a);
+    color: white;
+    transform: translateX(5px);
+  }
+}
+
+/* Touch feedback for mobile */
+.btn-primary:active,
+.btn-secondary:active,
+.property-button:active {
+  transform: scale(0.98);
+  opacity: 0.9;
 }
 
 .btn-large {
@@ -208,12 +225,6 @@
   transition: all 0.3s ease;
 }
 
-.property-button:hover {
-  background: var(--primary-color, #1a472a);
-  color: white;
-  transform: translateX(5px);
-}
-
 /* Victory modal */
 .victory-modal {
   background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
@@ -263,10 +274,11 @@
   font-weight: 600;
 }
 
-/* Responsive */
+/* Responsive - Tablet and below */
 @media (max-width: 768px) {
   .modal {
     padding: 1.5rem;
+    width: 95%;
   }
 
   .modal h2 {
@@ -275,10 +287,113 @@
 
   .modal-buttons {
     flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  /* Larger touch targets on mobile */
+  .btn-primary,
+  .btn-secondary {
+    min-height: 44px; /* iOS recommended touch target */
+    padding: 1.2rem;
+  }
+
+  .btn-large {
+    min-height: 50px;
+    padding: 1.3rem;
+  }
+
+  .property-button {
+    min-height: 44px;
+    padding: 1rem;
   }
 
   .manage-modal {
     max-height: 80vh;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+}
+
+/* Responsive - Small phones (iPhone SE, etc.) */
+@media (max-width: 480px) {
+  .modal {
+    padding: 1rem;
+    width: 98%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .modal p {
+    font-size: 1rem;
+  }
+
+  .modal-price,
+  .modal-rent,
+  .modal-tax {
+    font-size: 1.3rem;
+    margin: 1rem 0;
+  }
+
+  .card-header {
+    font-size: 1.5rem;
+  }
+
+  .card-description {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  .dice-result-label {
+    font-size: 1.2rem;
+  }
+
+  .victory-modal h1 {
+    font-size: 2rem;
+  }
+
+  .victory-modal h2 {
+    font-size: 1.5rem;
+  }
+
+  .winner-balance {
+    font-size: 1.5rem;
+  }
+
+  .jail-options {
+    gap: 0.6rem;
+  }
+
+  .jail-options p {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Landscape mode on phones */
+@media (max-height: 500px) and (orientation: landscape) {
+  .modal {
+    padding: 0.8rem;
+    max-height: 85vh;
+  }
+
+  .modal h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .modal-buttons {
+    margin-top: 1rem;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-large {
+    padding: 0.8rem;
+    font-size: 1rem;
   }
 }

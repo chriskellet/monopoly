@@ -55,10 +55,18 @@
   cursor: pointer;
 }
 
-.board-tile:hover {
-  transform: translateZ(20px) scale(1.05);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  z-index: 100;
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .board-tile:hover {
+    transform: translateZ(20px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+  }
+}
+
+/* Touch feedback for mobile */
+.board-tile:active {
+  transform: scale(0.98);
 }
 
 /* Calculate tile positions for a 40-tile board (10 per side) */
@@ -319,10 +327,29 @@
   opacity: 0.9;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments - Tablet and below */
 @media (max-width: 768px) {
   .board-container {
-    padding: 1rem;
+    padding: 0.5rem;
+  }
+
+  .board-3d {
+    width: min(95vmin, 600px);
+    height: min(95vmin, 600px);
+  }
+
+  /* Simplify 3D transform on mobile for better performance */
+  .board-3d {
+    transform: rotateX(15deg) rotateZ(0deg) scale(1);
+  }
+
+  @keyframes boardFloat {
+    0%, 100% {
+      transform: rotateX(15deg) rotateZ(0deg) translateY(0);
+    }
+    50% {
+      transform: rotateX(15deg) rotateZ(0deg) translateY(-5px);
+    }
   }
 
   .board-title {
@@ -341,9 +368,114 @@
     font-size: 0.6rem;
   }
 
+  .tile-content {
+    padding: 0.2rem;
+    font-size: 0.6rem;
+  }
+
+  .tile-icon {
+    font-size: 1.2rem;
+  }
+
   .player-token {
     width: 10px;
     height: 10px;
+  }
+
+  .token-piece {
+    width: 20px;
+    height: 24px;
+    border-width: 1.5px;
+  }
+
+  .token-icon {
+    font-size: 14px;
+  }
+}
+
+/* Responsive - Small phones (iPhone SE, etc.) */
+@media (max-width: 480px) {
+  .board-container {
+    padding: 0.25rem;
+  }
+
+  .board-3d {
+    width: min(98vmin, 450px);
+    height: min(98vmin, 450px);
+  }
+
+  /* Further simplify 3D on small screens */
+  .board-3d {
+    transform: rotateX(10deg) rotateZ(0deg) scale(1);
+  }
+
+  .board-surface {
+    border-width: 4px;
+  }
+
+  .board-title {
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+
+  .board-info {
+    font-size: 0.7rem;
+  }
+
+  .tile-name {
+    font-size: 0.5rem;
+  }
+
+  .tile-price {
+    font-size: 0.55rem;
+  }
+
+  .tile-content {
+    padding: 0.15rem;
+    font-size: 0.55rem;
+  }
+
+  .tile-icon {
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .token-piece {
+    width: 16px;
+    height: 20px;
+  }
+
+  .token-icon {
+    font-size: 12px;
+  }
+
+  .buildings {
+    font-size: 0.7rem;
+    gap: 1px;
+  }
+}
+
+/* Landscape mode on phones */
+@media (max-height: 500px) and (orientation: landscape) {
+  .board-container {
+    padding: 0.25rem;
+  }
+
+  .board-3d {
+    width: min(85vh, 500px);
+    height: min(85vh, 500px);
+  }
+
+  .board-center {
+    padding: 1rem;
+  }
+
+  .board-title {
+    font-size: 0.9rem;
+  }
+
+  .board-info {
+    font-size: 0.65rem;
   }
 }
 
