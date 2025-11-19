@@ -49,16 +49,49 @@
   font-size: 1.8rem;
 }
 
+/* Dice result label */
+.dice-result-label {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary-color, #1a472a);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 /* Highlight dice in modal */
 .modal .dice-container {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border: 3px solid var(--primary-color, #1a472a);
+  border: 4px solid var(--primary-color, #1a472a);
   border-radius: 20px;
   box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    0 10px 30px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 0 2px rgba(26, 71, 42, 0.2);
   margin: 1rem auto;
   max-width: 450px;
+  position: relative;
+}
+
+/* Add glow effect to dice container when showing result */
+.modal .dice-container:not(:has(.rolling)) {
+  animation: diceGlow 2s ease-in-out infinite;
+}
+
+@keyframes diceGlow {
+  0%, 100% {
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 0 0 2px rgba(26, 71, 42, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 0 0 2px rgba(26, 71, 42, 0.2),
+      0 0 20px rgba(255, 215, 0, 0.5);
+  }
 }
 
 .modal p {
