@@ -330,25 +330,25 @@
 /* Responsive adjustments - Tablet and below */
 @media (max-width: 768px) {
   .board-container {
-    padding: 0.5rem;
+    padding: 1rem;
   }
 
   .board-3d {
-    width: min(95vmin, 600px);
-    height: min(95vmin, 600px);
+    width: min(85vmin, 550px);
+    height: min(85vmin, 550px);
   }
 
   /* Simplify 3D transform on mobile for better performance */
   .board-3d {
-    transform: rotateX(15deg) rotateZ(0deg) scale(1);
+    transform: rotateX(15deg) rotateZ(0deg) scale(0.95);
   }
 
   @keyframes boardFloat {
     0%, 100% {
-      transform: rotateX(15deg) rotateZ(0deg) translateY(0);
+      transform: rotateX(15deg) rotateZ(0deg) translateY(0) scale(0.95);
     }
     50% {
-      transform: rotateX(15deg) rotateZ(0deg) translateY(-5px);
+      transform: rotateX(15deg) rotateZ(0deg) translateY(-5px) scale(0.95);
     }
   }
 
@@ -396,17 +396,26 @@
 /* Responsive - Small phones (iPhone SE, etc.) */
 @media (max-width: 480px) {
   .board-container {
-    padding: 0.25rem;
+    padding: 0.5rem;
   }
 
   .board-3d {
-    width: min(98vmin, 450px);
-    height: min(98vmin, 450px);
+    width: min(80vmin, 400px);
+    height: min(80vmin, 400px);
   }
 
   /* Further simplify 3D on small screens */
   .board-3d {
-    transform: rotateX(10deg) rotateZ(0deg) scale(1);
+    transform: rotateX(10deg) rotateZ(0deg) scale(0.9);
+  }
+
+  @keyframes boardFloat {
+    0%, 100% {
+      transform: rotateX(10deg) rotateZ(0deg) translateY(0) scale(0.9);
+    }
+    50% {
+      transform: rotateX(10deg) rotateZ(0deg) translateY(-3px) scale(0.9);
+    }
   }
 
   .board-surface {
@@ -458,12 +467,22 @@
 /* Landscape mode on phones */
 @media (max-height: 500px) and (orientation: landscape) {
   .board-container {
-    padding: 0.25rem;
+    padding: 0.5rem;
   }
 
   .board-3d {
-    width: min(85vh, 500px);
-    height: min(85vh, 500px);
+    width: min(75vh, 450px);
+    height: min(75vh, 450px);
+    transform: rotateX(10deg) rotateZ(0deg) scale(0.85);
+  }
+
+  @keyframes boardFloat {
+    0%, 100% {
+      transform: rotateX(10deg) rotateZ(0deg) translateY(0) scale(0.85);
+    }
+    50% {
+      transform: rotateX(10deg) rotateZ(0deg) translateY(-3px) scale(0.85);
+    }
   }
 
   .board-center {
